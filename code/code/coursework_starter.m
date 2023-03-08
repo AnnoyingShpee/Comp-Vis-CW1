@@ -15,11 +15,23 @@
 %neighbor' classifier and should run as is using my obfuscated pcode
 %implementation. You need to reimplement the above two functions and also
 %implement the 'colour histogram' feature extraction.
+tic
+% FEATURE = 'tiny image';
+IMG_SIZE = 16; % 16, 32, 64
 
-FEATURE = 'tiny image';
-%FEATURE = 'colour histogram';
+
+% FEATURE = 'colour histogram';
+QUANTISATION = 16; % 16, 32, 64
+COLOUR_SPACE = "rgb";
+% COLOUR_SPACE = "hsv";
+% COLOUR_SPACE = "lab";
+% COLOUR_SPACE = "ycbcr";
+% COLOUR_SPACE = "yiq";
+
+FEATURE = 'tiny histogram';
 
 CLASSIFIER = 'nearest neighbor';
+K = 1;
 
 % I suggest you install and setup VLFeat toolbox. You may not need it in
 % coursework 1, but you will definitely need it in coursework 2.
@@ -45,6 +57,7 @@ abbr_categories = {'Kit', 'Sto', 'Bed', 'Liv', 'Hou', 'Ind', 'Sta', ...
 %simplicity, we assume this is the number of test cases per category, as
 %well.
 num_train_per_cat = 100; 
+% num_train_per_cat = 10; 
 
 %This function returns cell arrays containing the file path for each train
 %and test image, as well as cell arrays with the label of each train and
@@ -82,13 +95,20 @@ switch lower(FEATURE)
         % square portion out of each image. Making the tiny images zero mean and
         % unit length (normalizing them) will increase performance modestly.
         
-        train_image_feats = get_tiny_images(train_image_paths);
-        test_image_feats  = get_tiny_images(test_image_paths);
+%         train_image_feats = get_tiny_images(train_image_paths);
+%         test_image_feats  = get_tiny_images(test_image_paths);
+        train_image_feats = get_tiny_images(train_image_paths, IMG_SIZE);
+        test_image_feats  = get_tiny_images(test_image_paths, IMG_SIZE);
     case 'colour histogram'
         %You should allow get_colour_histograms to take parameters e.g.
         %quantisation, colour space etc.
-        train_image_feats = get_colour_histograms(train_image_paths);
-        test_image_feats  = get_colour_histograms(test_image_paths);
+%         train_image_feats = get_colour_histograms(train_image_paths);
+%         test_image_feats  = get_colour_histograms(test_image_paths);
+        train_image_feats = get_colour_histograms(train_image_paths, QUANTISATION, COLOUR_SPACE);
+        test_image_feats  = get_colour_histograms(test_image_paths, QUANTISATION, COLOUR_SPACE);
+    case 'tiny histogram'
+        train_image_feats = get_tiny_hist(train_image_paths, IMG_SIZE, QUANTISATION, COLOUR_SPACE);
+        test_image_feats  = get_tiny_hist(test_image_paths, IMG_SIZE, QUANTISATION, COLOUR_SPACE);
 end
 %% Step 2: Classify each test image by training and using the appropriate classifier
 % Each function to classify test features will return an N x 1 cell array,
@@ -121,7 +141,8 @@ switch lower(CLASSIFIER)
     % predicted_categories is an M x 1 cell array, where each entry is a string
     %  indicating the predicted category for each test image.
     % Useful functions: pdist2 (Matlab) and vl_alldist2 (from vlFeat toolbox)
-    predicted_categories = nearest_neighbor_classify(train_image_feats, train_labels, test_image_feats);
+%     predicted_categories = nearest_neighbor_classify(train_image_feats, train_labels, test_image_feats);
+    predicted_categories = nearest_neighbor_classify(train_image_feats, train_labels, test_image_feats, K);
 end
 
 %% Step 3: Build a confusion matrix and score the recognition system
@@ -138,3 +159,4 @@ create_results_webpage( train_image_paths, ...
                         categories, ...
                         abbr_categories, ...
                         predicted_categories)
+toc
