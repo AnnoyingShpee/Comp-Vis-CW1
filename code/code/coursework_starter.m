@@ -16,8 +16,8 @@
 %implementation. You need to reimplement the above two functions and also
 %implement the 'colour histogram' feature extraction.
 tic
-% FEATURE = 'tiny image';
-IMG_SIZE = 16; % 16, 32, 64
+FEATURE = 'tiny image';
+IMG_SIZE = 32; % 16, 32, 64
 
 
 % FEATURE = 'colour histogram';
@@ -28,10 +28,13 @@ COLOUR_SPACE = "rgb";
 % COLOUR_SPACE = "ycbcr";
 % COLOUR_SPACE = "yiq";
 
-FEATURE = 'tiny histogram';
+% FEATURE = 'tiny histogram';
 
 CLASSIFIER = 'nearest neighbor';
-K = 1;
+K = 37;
+DIST_MEASURE = "euclidean";
+% DIST_MEASURE = "minkowski";
+% DIST_MEASURE = "cityblock";
 
 % I suggest you install and setup VLFeat toolbox. You may not need it in
 % coursework 1, but you will definitely need it in coursework 2.
@@ -56,8 +59,8 @@ abbr_categories = {'Kit', 'Sto', 'Bed', 'Liv', 'Hou', 'Ind', 'Sta', ...
 %number of training examples per category to use. Max is 100. For
 %simplicity, we assume this is the number of test cases per category, as
 %well.
-num_train_per_cat = 100; 
 % num_train_per_cat = 10; 
+num_train_per_cat = 100; 
 
 %This function returns cell arrays containing the file path for each train
 %and test image, as well as cell arrays with the label of each train and
@@ -142,7 +145,7 @@ switch lower(CLASSIFIER)
     %  indicating the predicted category for each test image.
     % Useful functions: pdist2 (Matlab) and vl_alldist2 (from vlFeat toolbox)
 %     predicted_categories = nearest_neighbor_classify(train_image_feats, train_labels, test_image_feats);
-    predicted_categories = nearest_neighbor_classify(train_image_feats, train_labels, test_image_feats, K);
+    predicted_categories = nearest_neighbor_classify(train_image_feats, train_labels, test_image_feats, K, DIST_MEASURE);
 end
 
 %% Step 3: Build a confusion matrix and score the recognition system

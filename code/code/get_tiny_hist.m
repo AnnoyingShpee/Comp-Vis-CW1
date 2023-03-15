@@ -15,9 +15,7 @@ parfor i = 1:length(img_paths)
             img = rgb2ntsc(img);
     end
     down_sampled_img = imresize(img, [tiny_img_size tiny_img_size]);
-    double_img = double(down_sampled_img);
-    quantised_img = image_quantisation(double_img, quantisation);
-    % MODIFICATION REQUIRED FOR EFFICIENCY
+    quantised_img = image_quantisation(down_sampled_img, quantisation);
     colour_hist = create_colour_histogram(quantised_img, quantisation);
     feature = colour_hist(:);
     features(i,:) = feature;
