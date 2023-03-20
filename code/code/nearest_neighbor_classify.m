@@ -62,7 +62,7 @@ parfor i = 1:test_size(1)
         for s = 1:size(multi_highest_indexes, 1)
             matches = ismember(k_labels(:,1), element(multi_highest_indexes(s)));
             sums(s, 1) = sum(k_dist(matches,1));
-            sums_labels(s, 1) = k_labels(s);
+            sums_labels(s, 1) = element(multi_highest_indexes(s));
         end
         [~, index] = min(sums, [], 1);
         predictions(i, :) = sums_labels(index);

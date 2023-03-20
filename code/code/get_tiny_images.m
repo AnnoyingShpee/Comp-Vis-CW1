@@ -13,6 +13,7 @@ parfor i = 1:length(img_paths)
     % element-wise by 255.
     norm_img = rescale(down_sampled_img);
 %     norm_img = down_sampled_img / 255;
+%     norm_img = norm(down_sampled_img);
     % Reshape the image to (1 x M)
     feature = norm_img(:)';
     features(i,:) = feature;

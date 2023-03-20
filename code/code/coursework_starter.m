@@ -16,12 +16,12 @@
 %implementation. You need to reimplement the above two functions and also
 %implement the 'colour histogram' feature extraction.
 tic
-FEATURE = 'tiny image';
-IMG_SIZE = 32; % 16, 32, 64
+% FEATURE = 'tiny image';
+IMG_SIZE = 16; % 8, 16, 32, 64
 
 
-% FEATURE = 'colour histogram';
-QUANTISATION = 16; % 16, 32, 64
+FEATURE = 'colour histogram';
+QUANTISATION = 8; % 8, 16, 32, 64
 COLOUR_SPACE = "rgb";
 % COLOUR_SPACE = "hsv";
 % COLOUR_SPACE = "lab";
@@ -31,7 +31,7 @@ COLOUR_SPACE = "rgb";
 % FEATURE = 'tiny histogram';
 
 CLASSIFIER = 'nearest neighbor';
-K = 37;
+K = 5;
 DIST_MEASURE = "euclidean";
 % DIST_MEASURE = "minkowski";
 % DIST_MEASURE = "cityblock";
@@ -74,6 +74,8 @@ fprintf('Getting paths and labels for all train and test data\n')
 %   train_labels       1500x1   cell         
 %   test_labels        1500x1   cell          
 
+% K = ceil(sqrt(size(test_image_paths, 1)));
+
 %% Step 1: Represent each image with the appropriate feature
 % Each function to construct features should return an N x d matrix, where
 % N is the number of paths passed to the function and d is the 
@@ -100,8 +102,10 @@ switch lower(FEATURE)
         
 %         train_image_feats = get_tiny_images(train_image_paths);
 %         test_image_feats  = get_tiny_images(test_image_paths);
-        train_image_feats = get_tiny_images(train_image_paths, IMG_SIZE);
-        test_image_feats  = get_tiny_images(test_image_paths, IMG_SIZE);
+%         train_image_feats = get_tiny_images(train_image_paths, IMG_SIZE);
+%         test_image_feats  = get_tiny_images(test_image_paths, IMG_SIZE);
+        train_image_feats = get_tiny_images_1(train_image_paths, IMG_SIZE);
+        test_image_feats  = get_tiny_images_1(test_image_paths, IMG_SIZE);
     case 'colour histogram'
         %You should allow get_colour_histograms to take parameters e.g.
         %quantisation, colour space etc.
@@ -109,6 +113,8 @@ switch lower(FEATURE)
 %         test_image_feats  = get_colour_histograms(test_image_paths);
         train_image_feats = get_colour_histograms(train_image_paths, QUANTISATION, COLOUR_SPACE);
         test_image_feats  = get_colour_histograms(test_image_paths, QUANTISATION, COLOUR_SPACE);
+%         train_image_feats = get_colour_histograms_1(train_image_paths, QUANTISATION);
+%         test_image_feats  = get_colour_histograms_1(test_image_paths, QUANTISATION);
     case 'tiny histogram'
         train_image_feats = get_tiny_hist(train_image_paths, IMG_SIZE, QUANTISATION, COLOUR_SPACE);
         test_image_feats  = get_tiny_hist(test_image_paths, IMG_SIZE, QUANTISATION, COLOUR_SPACE);
