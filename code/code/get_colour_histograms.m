@@ -5,7 +5,7 @@ function [features] = get_colour_histograms(img_paths, quantisation, colour_spac
 %   colour_space = Type of colour space of image colour values
 features = zeros(size(img_paths,1), quantisation^3);
 % USE THREADS FOR PARALLEL RUNNING
-for i = 1:length(img_paths)
+parfor i = 1:length(img_paths)
 %     colour_hist = zeros(quantisation, quantisation, quantisation);
     img = imread(img_paths{i});
     % Convert image RGB values to a different different colour space if

@@ -21,7 +21,7 @@ IMG_SIZE = 16; % 8, 16, 32, 64
 
 
 FEATURE = 'colour histogram';
-QUANTISATION = 8; % 8, 16, 32, 64
+QUANTISATION = 16; % 8, 16, 32, 64
 COLOUR_SPACE = "rgb";
 % COLOUR_SPACE = "hsv";
 % COLOUR_SPACE = "lab";
@@ -31,11 +31,7 @@ COLOUR_SPACE = "rgb";
 % FEATURE = 'tiny histogram';
 
 CLASSIFIER = 'nearest neighbor';
-% k = 1;
-K = 5;
-DIST_MEASURE = "euclidean";
-% DIST_MEASURE = "minkowski";
-% DIST_MEASURE = "cityblock";
+
 
 % I suggest you install and setup VLFeat toolbox. You may not need it in
 % coursework 1, but you will definitely need it in coursework 2.
@@ -75,7 +71,12 @@ fprintf('Getting paths and labels for all train and test data\n')
 %   train_labels       1500x1   cell         
 %   test_labels        1500x1   cell          
 
+% K = 1;
+K = 5;
 % K = ceil(sqrt(size(test_image_paths, 1)));
+DIST_MEASURE = "euclidean";
+% DIST_MEASURE = "minkowski";
+% DIST_MEASURE = "cityblock";
 
 %% Step 1: Represent each image with the appropriate feature
 % Each function to construct features should return an N x d matrix, where
