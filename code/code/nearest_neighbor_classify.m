@@ -13,23 +13,13 @@ predictions = strings(test_size(1), 1);
 parfor i = 1:test_size(1)
     % Get a feature vector
     test_feature_vector = test_image_feats(i,:);
-    train_size = size(train_image_feats);
-    % Initialise a (N x 2) cell array to store the distance and labels 
-    distances = cell([train_size(1), 2]);
-    % Calculate the distance between a test feature vector and each train
-    % feature vector
-    for j = 1:train_size(1)
-        dist = pdist2(test_feature_vector, train_image_feats(j,:), dist_measure);
-        distances{j, 1} = dist;
-        distances{j, 2} = train_labels{j};
-    end
+    % Calculate the distance between each test feature vector and train
+    % feature vectors
+    distances = pdist2(train_image_feats, test_feature_vector, dist_measure);
     %% Get the K nearest neighbours
     % Sort the distances by ascending order
     % sort_dist and sort_index are both size (1 x N)
-    [sort_dist, sort_index] = sort([distances{:,1}]);
-    % Reshape sort_dist and sort_index to be (N x 1)
-    sort_dist = sort_dist';
-    sort_index = sort_index';
+    [sort_dist, sort_index] = sort(distances(:,1));
     % Get the first K elements in sort_index. These are the index of the
     % nearest neighbours in train_labels
     k_nearest_index = sort_index(1:K);

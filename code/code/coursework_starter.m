@@ -31,6 +31,7 @@ COLOUR_SPACE = "rgb";
 % FEATURE = 'tiny histogram';
 
 CLASSIFIER = 'nearest neighbor';
+% k = 1;
 K = 5;
 DIST_MEASURE = "euclidean";
 % DIST_MEASURE = "minkowski";
@@ -104,8 +105,8 @@ switch lower(FEATURE)
 %         test_image_feats  = get_tiny_images(test_image_paths);
 %         train_image_feats = get_tiny_images(train_image_paths, IMG_SIZE);
 %         test_image_feats  = get_tiny_images(test_image_paths, IMG_SIZE);
-        train_image_feats = get_tiny_images_1(train_image_paths, IMG_SIZE);
-        test_image_feats  = get_tiny_images_1(test_image_paths, IMG_SIZE);
+        train_image_feats = get_tiny_images(train_image_paths, IMG_SIZE);
+        test_image_feats  = get_tiny_images(test_image_paths, IMG_SIZE);
     case 'colour histogram'
         %You should allow get_colour_histograms to take parameters e.g.
         %quantisation, colour space etc.
